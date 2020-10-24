@@ -78,22 +78,16 @@ namespace IG.Csharp.Api.Client.Rest
                 }
             }            
             return _authenticationResponse;
-        }      
-        private bool ShouldAuthenticate()
-        {
-            return
-                _authenticationResponse == null ||
-                (DateTime.Now - _authenticationResponse.Date).TotalHours >= 5;
         }
+        private bool ShouldAuthenticate() => _authenticationResponse == null ||
+                (DateTime.Now - _authenticationResponse.Date).TotalHours >= 5;
         private AuthenticationResponse GetAuthenticationResponseFromDisk()
         {
             try { return JsonConvert.DeserializeObject<AuthenticationResponse>(File.ReadAllText("authenticationResponse.json")); }
             catch (FileNotFoundException) { return null; }
         }
-        private void SaveAuthentication(AuthenticationResponse authenticationResponse)
-        {
+        private void SaveAuthentication(AuthenticationResponse authenticationResponse) => 
             File.WriteAllText("authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
-        }
         private T GetApiResponse<T>(string query, string version)
         {
             using (var client = new HttpClient())
@@ -128,28 +122,16 @@ namespace IG.Csharp.Api.Client.Rest
                 return JsonConvert.DeserializeObject<T>(result);
             }
         }
-        public PositionsResponse GetPositions()
-        {
-            return GetApiResponse<PositionsResponse>(POSITIONS_URI, "2");
-        }
-        public ListOfWatchlistsResponse GetWatchLists()
-        {
-            return GetApiResponse<ListOfWatchlistsResponse>(WATCHLISTS_URI, "1");
-        }
-        public AccountDetailsResponse GetAccounts()
-        {
-            return GetApiResponse<AccountDetailsResponse>(ACCOUNTS_URI, "1");
-        }
-        public TradeConfirmResponse GetTradeConfirm(string dealReference)
-        {
-            var uri = TRADE_CONFIRM_URI + $"/{dealReference}";
-            return GetApiResponse<TradeConfirmResponse>(uri, "1");
-        }
-        public WatchlistInstrumentsResponse GetInstrumentsByWatchlistId(string watchListId)
-        {
-            var query = $"{WATCHLISTS_URI}/{watchListId}";
-            return GetApiResponse<WatchlistInstrumentsResponse>(query, "1");
-        }
+        public PositionsResponse GetPositions() => 
+            GetApiResponse<PositionsResponse>(POSITIONS_URI, "2");
+        public ListOfWatchlistsResponse GetWatchLists() => 
+            GetApiResponse<ListOfWatchlistsResponse>(WATCHLISTS_URI, "1");
+        public AccountDetailsResponse GetAccounts() => 
+            GetApiResponse<AccountDetailsResponse>(ACCOUNTS_URI, "1");
+        public TradeConfirmResponse GetTradeConfirm(string dealReference) => 
+            GetApiResponse<TradeConfirmResponse>(TRADE_CONFIRM_URI + $"/{dealReference}", "1");
+        public WatchlistInstrumentsResponse GetInstrumentsByWatchlistId(string watchListId) => 
+            GetApiResponse<WatchlistInstrumentsResponse>($"{WATCHLISTS_URI}/{watchListId}", "1");
         public TransactionsResponse GetTransactions(DateTime from)
         {
             var uri = $"{TRANSACTIONS_URI}?from={from:yyyy-MM-dd}";
@@ -171,11 +153,8 @@ namespace IG.Csharp.Api.Client.Rest
                 GetTransactions(transactions, uri, response.Metadata.pageData.pageNumber + 1);
             return transactions;
         }
-        public ActivitiesResponse GetActivities(DateTime from)
-        {
-            var uri = $"{ACTIVITIES_URI}?from={from:yyyy-MM-dd}";
-            return GetApiResponse<ActivitiesResponse>(uri, "3");
-        }
+        public ActivitiesResponse GetActivities(DateTime from) => 
+            GetApiResponse<ActivitiesResponse>($"{ACTIVITIES_URI}?from={from:yyyy-MM-dd}", "3");
         public OpenPositionResponse OpenMarketPosition(string epic, string side, double size)
         {
             var request = new OpenPositionRequest
@@ -214,37 +193,22 @@ namespace IG.Csharp.Api.Client.Rest
             var content = JsonConvert.SerializeObject(request);
             return PostApiResponse<CreateWorkingOrderResponse>(WORKING_ORDERS_URI, content, "2");
         }
-        public ClosePositionResponse ClosePosition(ClosePositionRequest request, string version)
-        {
-            var content = JsonConvert.SerializeObject(request);
-            return PostApiResponse<ClosePositionResponse>(POSITIONS_OTC_URI, content, version, "DELETE");
-        }
-        public ClosePositionResponse ClosePositionLimit(ClosePositionLimitRequest request, string version)
-        {
-            var content = JsonConvert.SerializeObject(request);
-            return PostApiResponse<ClosePositionResponse>(POSITIONS_OTC_URI, content, version, "DELETE");
-        }
+        public ClosePositionResponse ClosePosition(ClosePositionRequest request, string version) => 
+            PostApiResponse<ClosePositionResponse>(POSITIONS_OTC_URI, JsonConvert.SerializeObject(request), version, "DELETE");
+        public ClosePositionResponse ClosePositionLimit(ClosePositionLimitRequest request, string version) => 
+            PostApiResponse<ClosePositionResponse>(POSITIONS_OTC_URI, JsonConvert.SerializeObject(request), version, "DELETE");
         public TransactionsResponse GetWeekTransactions()
         {
             DateTime startOfWeek = DateTime.Now.StartOfWeek(DayOfWeek.Monday);
-            var uri = $"{TRANSACTIONS_URI}/ALL/{startOfWeek.ToString("yyyy-MM-dd")}/{DateTime.Now.ToString("yyyy-MM-dd")}";
+            var uri = $"{TRANSACTIONS_URI}/ALL/{startOfWeek:yyyy-MM-dd}/{DateTime.Now:yyyy-MM-dd}";
             return GetApiResponse<TransactionsResponse>(uri, "2");
         }
-        public MarketNavigationResponse GetMarketNavigation(string id)
-        {
-            var uri = MARKET_NAVIGATION_URI + (!string.IsNullOrEmpty(id) ? $"/{id}" : string.Empty);
-            return GetApiResponse<MarketNavigationResponse>(uri, "1");
-        }
-        public MarketDetailsResponse GetMarketDetails(string epic)
-        {
-            var uri = $"{MARKETS_URI}/{epic}";
-            return GetApiResponse<MarketDetailsResponse>(uri, "3");
-        }
-        public SearchMarketResponse SearchMarkets(string searchTem)
-        {
-            var uri = $"{MARKETS_URI}?searchTerm={WebUtility.UrlEncode(searchTem)}";
-            return GetApiResponse<SearchMarketResponse>(uri, "1");
-        }        
+        public MarketNavigationResponse GetMarketNavigation(string id) => 
+            GetApiResponse<MarketNavigationResponse>(MARKET_NAVIGATION_URI + (!string.IsNullOrEmpty(id) ? $"/{id}" : string.Empty), "1");
+        public MarketDetailsResponse GetMarketDetails(string epic) => 
+            GetApiResponse<MarketDetailsResponse>($"{MARKETS_URI}/{epic}", "3");
+        public SearchMarketResponse SearchMarkets(string searchTem) => 
+            GetApiResponse<SearchMarketResponse>($"{MARKETS_URI}?searchTerm={WebUtility.UrlEncode(searchTem)}", "1");
         public void SavePriceDataToFile(string epic, Resolution resolution, DateTime from, DateTime to, string filePathToSave)
         {
             var startDate = from.ToString("yyyy-MM-dd") + "T00%3A00%3A00";
