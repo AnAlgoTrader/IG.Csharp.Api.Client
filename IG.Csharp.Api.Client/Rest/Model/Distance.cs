@@ -2,7 +2,7 @@
 
 namespace IG.Csharp.Api.Client.Rest.Model
 {
-    public class MaxStopOrLimitDistance
+    public class Distance
     {
         [JsonProperty("unit")]
         public string Unit;

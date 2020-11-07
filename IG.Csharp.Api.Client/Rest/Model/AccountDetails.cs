@@ -1,11 +1,18 @@
-﻿namespace IG.Csharp.Api.Client.Rest.Model
+﻿using Newtonsoft.Json;
+
+namespace IG.Csharp.Api.Client.Rest.Model
 {
     public class AccountDetails
     {
-        public string accountId { get; set; }
-        public string accountName { get; set; }
-        public bool preferred { get; set; }
-        public string accountType { get; set; }
-        public Balance balance { get; set; }
+        [JsonProperty("accountId")]
+        public string AccountId { get; set; }
+        [JsonProperty("accountName")]
+        public string AccountName { get; set; }
+        [JsonProperty("preferred")]
+        public bool Preferred { get; set; }
+        [JsonProperty("accountType")]
+        public string AccountType { get; set; }
+        [JsonProperty("balance")]
+        public Balance Balance { get; set; }
     }
 }

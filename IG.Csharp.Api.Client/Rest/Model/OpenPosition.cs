@@ -1,14 +1,12 @@
-﻿namespace IG.Csharp.Api.Client.Rest.Model
+﻿using Newtonsoft.Json;
+
+namespace IG.Csharp.Api.Client.Rest.Model
 {
     public class OpenPosition
     {
-        ///<Summary>
-        ///Open position data
-        ///</Summary>
-        public OpenPositionData position { get; set; }
-        ///<Summary>
-        ///Market data
-        ///</Summary>
-        public MarketData market { get; set; }
+        [JsonProperty("position")]
+        public OpenPositionData Position { get; set; }
+        [JsonProperty("market")]
+        public MarketData Market { get; set; }
     }
 }

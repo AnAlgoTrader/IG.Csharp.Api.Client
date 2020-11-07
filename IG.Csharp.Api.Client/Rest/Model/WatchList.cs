@@ -1,27 +1,22 @@
-﻿namespace IG.Csharp.Api.Client.Rest.Model
+﻿using Newtonsoft.Json;
+
+namespace IG.Csharp.Api.Client.Rest.Model
 {
     public class Watchlist
     {
-        ///<Summary>
-        ///Watchlist indentifier
-        ///</Summary>
-        public string id { get; set; }
-        ///<Summary>
-        ///Watchlist name
-        ///</Summary>
-        public string name { get; set; }
-        ///<Summary>
-        ///True if this watchlist can be altered by the user
-        ///</Summary>
-        public bool editable { get; set; }
-        ///<Summary>
-        ///True if this watchlist can be deleted by the user
-        ///</Summary>
-        public bool deleteable { get; set; }
-        ///<Summary>
-        ///True if this watchlist doesn't belong to the user, but rather is a system
-        ///predefined one
-        ///</Summary>
-        public bool defaultSystemWatchlist { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("editable")]
+        public bool Editable { get; set; }
+
+        [JsonProperty("deleteable")]
+        public bool Deleteable { get; set; }
+
+        [JsonProperty("defaultSystemWatchlist")]
+        public bool DefaultSystemWatchlist { get; set; }
     }
 }

@@ -1,8 +1,13 @@
-﻿namespace IG.Csharp.Api.Client.Rest.Model
+﻿using Newtonsoft.Json;
+
+namespace IG.Csharp.Api.Client.Rest.Model
 {
     public class MarketNode
     {
-        public string id { get; set; }
-        public string name { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
     }
 }

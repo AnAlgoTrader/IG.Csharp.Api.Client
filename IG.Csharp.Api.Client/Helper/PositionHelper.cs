@@ -10,16 +10,16 @@ namespace IG.Csharp.Api.Client.Helper
             if (tradeSide == TradeSide.BUY) return Math.Round((buyPrice - level) * size, 2);
             else return Math.Round((level - sellPrice) * size, 2);
         }
-        public static double? CalculatePL(OpenPosition position)
+        public static double? CalculatePL(OpenPosition openPosition)
         {
-            if (position.position.direction == "BUY") return (position.market.bid - position.position.level) * position.position.size;
-            else return (position.position.level - position.market.offer) * position.position.size;
+            if (openPosition.Position.Direction == "BUY") return (openPosition.Market.Bid - openPosition.Position.Level) * openPosition.Position.Size;
+            else return (openPosition.Position.Level - openPosition.Market.Offer) * openPosition.Position.Size;
         }
 
-        public static double? CalculatePL(OpenPosition position, Streaming.Model.MarketData marketData)
+        public static double? CalculatePL(OpenPosition openPosition, Streaming.Model.MarketData marketData)
         {
-            if (position.position.direction == "BUY") return (marketData.Bid - position.position.level) * position.position.size;
-            else return (position.position.level - marketData.Offer) * position.position.size;
+            if (openPosition.Position.Direction == "BUY") return (marketData.Bid - openPosition.Position.Level) * openPosition.Position.Size;
+            else return (openPosition.Position.Level - marketData.Offer) * openPosition.Position.Size;
         }
     }
 }

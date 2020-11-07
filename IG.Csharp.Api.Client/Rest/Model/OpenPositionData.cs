@@ -1,56 +1,49 @@
-﻿namespace IG.Csharp.Api.Client.Rest.Model
+﻿using Newtonsoft.Json;
+
+namespace IG.Csharp.Api.Client.Rest.Model
 {
     public class OpenPositionData
     {
-        ///<Summary>
-        ///Size of the contract
-        ///</Summary>
-        public double contractSize { get; set; }
-        ///<Summary>
-        ///Date the position was opened
-        ///</Summary>
-        public string createdDate { get; set; }
-        ///<Summary>
-        ///Deal identifier
-        ///</Summary>
-        public string dealId { get; set; }
-        public string dealReference { get; set; }
-        ///<Summary>
-        ///Deal size
-        ///</Summary>
-        public double size { get; set; }
-        ///<Summary>
-        ///Deal direction
-        ///</Summary>
-        public string direction { get; set; }
-        ///<Summary>
-        ///Limit level
-        ///</Summary>
-        public decimal? limitLevel { get; set; }
-        ///<Summary>
-        ///Level at which the position was opened
-        ///</Summary>
-        public double level { get; set; }
-        ///<Summary>
-        ///Position currency ISO code
-        ///</Summary>
-        public string currency { get; set; }
-        ///<Summary>
-        ///True if position is risk controlled
-        ///</Summary>
-        public bool controlledRisk { get; set; }
-        ///<Summary>
-        ///Stop level
-        ///</Summary>
-        public decimal? stopLevel { get; set; }
-        ///<Summary>
-        ///Trailing step size
-        ///</Summary>
-        public decimal? trailingStep { get; set; }
-        ///<Summary>
-        ///Trailing stop distance
-        ///</Summary>
-        public decimal? trailingStopDistance { get; set; }
-        public double profitAndLoss { get; set; }
+        [JsonProperty("contractSize")]
+        public double ContractSize { get; set; }
+
+        [JsonProperty("createdDate")]
+        public string CreatedDate { get; set; }
+
+        [JsonProperty("dealId")]
+        public string DealId { get; set; }
+
+        [JsonProperty("dealReference")]
+        public string DealReference { get; set; }
+
+        [JsonProperty("size")]
+        public double Size { get; set; }
+
+        [JsonProperty("direction")]
+        public string Direction { get; set; }
+
+        [JsonProperty("limitLevel")]
+        public decimal? LimitLevel { get; set; }
+
+        [JsonProperty("level")]
+        public double Level { get; set; }
+
+        [JsonProperty("currency")]
+        public string Currency { get; set; }
+
+        [JsonProperty("controlledRisk")]
+        public bool ControlledRisk { get; set; }
+
+        [JsonProperty("stopLevel")]
+        public decimal? StopLevel { get; set; }
+
+        [JsonProperty("trailingStop")]
+        public decimal? TrailingStop { get; set; }
+
+        [JsonProperty("trailingStopDistance")]
+        public decimal? TrailingStopDistance { get; set; }
+
+        [JsonProperty("profitAndLoss")]
+        public double ProfitAndLoss { get; set; }
     }
 }
