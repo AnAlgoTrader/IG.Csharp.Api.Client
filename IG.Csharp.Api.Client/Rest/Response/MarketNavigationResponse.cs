@@ -1,11 +1,15 @@
 ﻿using IG.Csharp.Api.Client.Rest.Model;
-using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace IG.Csharp.Api.Client.Rest.Response
 {
     public class MarketNavigationResponse
     {
-        public List<MarketNode> nodes { get; set; }
-        public List<MarketData> markets { get; set; }
+        [JsonProperty("nodes")]
+        public ReadOnlyCollection<MarketNode> Nodes { get; set; }
+
+        [JsonProperty("markets")]
+        public ReadOnlyCollection<MarketData> Markets { get; set; }
     }
 }

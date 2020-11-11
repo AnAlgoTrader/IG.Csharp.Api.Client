@@ -5,11 +5,13 @@ using IG.Csharp.Api.Client.Rest.Response;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Threading;
 
 namespace IG.Csharp.Api.Client.Rest
@@ -39,7 +41,7 @@ namespace IG.Csharp.Api.Client.Rest
             _username = username;
             _password = password;
             _apiKey = apiKey;
-            _baseUri = string.Format("https://{0}api.ig.com", environment == "live" ? "" : environment + "-");
+            _baseUri = $"https://{(environment == "live" ? string.Empty : environment + "-")}api.ig.com";
         }
         public AuthenticationResponse Authenticate()
         {
@@ -53,74 +55,64 @@ namespace IG.Csharp.Api.Client.Rest
                     password = _password
                 };
 
-                using (var client = new HttpClient())
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+                client.DefaultRequestHeaders.Add("VERSION", "2");
+
+                using var content = new StringContent(JsonConvert.SerializeObject(authRequest));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var response = client.PostAsync(new Uri($"{_baseUri}/{SESSION_URI}"), content).Result;
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    client.BaseAddress = new Uri(_baseUri);
-                    client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-                    client.DefaultRequestHeaders.Add("VERSION", "2");
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    _authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(result);
 
-                    var content = new StringContent(JsonConvert.SerializeObject(authRequest));
-                    content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                    var response = client.PostAsync(SESSION_URI, content).Result;
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var result = response.Content.ReadAsStringAsync().Result;
-                        _authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(result);
-
-                        _authenticationResponse.Cst = response.Headers.FirstOrDefault(x => x.Key == "CST").Value.First();
-                        _authenticationResponse.XSecurityToken = response.Headers.FirstOrDefault(x => x.Key == "X-SECURITY-TOKEN").Value.First();
-                        _authenticationResponse.ApiKey = _apiKey;
-                        _authenticationResponse.Date = DateTime.Now;
-                        SaveAuthentication(_authenticationResponse);
-                    }
-                    else throw new Exception("Not Authenticated");
+                    _authenticationResponse.Cst = response.Headers.FirstOrDefault(x => x.Key == "CST").Value.First();
+                    _authenticationResponse.XSecurityToken = response.Headers.FirstOrDefault(x => x.Key == "X-SECURITY-TOKEN").Value.First();
+                    _authenticationResponse.ApiKey = _apiKey;
+                    _authenticationResponse.Date = DateTime.Now;
+                    SaveAuthentication(_authenticationResponse);
                 }
+                else throw new AuthenticationException("Not Authenticated");
             }            
             return _authenticationResponse;
         }
         private bool ShouldAuthenticate() => _authenticationResponse == null ||
                 (DateTime.Now - _authenticationResponse.Date).TotalHours >= 5;
-        private AuthenticationResponse GetAuthenticationResponseFromDisk()
+        private static AuthenticationResponse GetAuthenticationResponseFromDisk()
         {
             try { return JsonConvert.DeserializeObject<AuthenticationResponse>(File.ReadAllText("authenticationResponse.json")); }
             catch (FileNotFoundException) { return null; }
         }
-        private void SaveAuthentication(AuthenticationResponse authenticationResponse) => 
+        private static void SaveAuthentication(AuthenticationResponse authenticationResponse) => 
             File.WriteAllText("authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
         private T GetApiResponse<T>(string query, string version)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(_baseUri);
-                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-                client.DefaultRequestHeaders.Add("VERSION", version);
-                client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
-                client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+            client.DefaultRequestHeaders.Add("VERSION", version);
+            client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
+            client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
 
-                var result = client.GetStringAsync(query).Result;
-                return JsonConvert.DeserializeObject<T>(result);
-            }
+            var result = client.GetStringAsync(new Uri($"{_baseUri}/{query}")).Result;
+            return JsonConvert.DeserializeObject<T>(result);
         }
         private T PostApiResponse<T>(string endpoint, string content, string version, string method = null)
         {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(_baseUri);
-                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-                client.DefaultRequestHeaders.Add("VERSION", version);
-                client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
-                client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
-                if (method != null)
-                    client.DefaultRequestHeaders.Add("_method", method);
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+            client.DefaultRequestHeaders.Add("VERSION", version);
+            client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
+            client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
+            if (method != null)
+                client.DefaultRequestHeaders.Add("_method", method);
 
-                var stringContent = new StringContent(content);
-                stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            using var stringContent = new StringContent(content);
+            stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-                var response = client.PostAsync(endpoint, stringContent).Result;
-                var result = response.Content.ReadAsStringAsync().Result;
-                return JsonConvert.DeserializeObject<T>(result);
-            }
+            var response = client.PostAsync(new Uri($"{_baseUri}/{endpoint}"), stringContent).Result;
+            var result = response.Content.ReadAsStringAsync().Result;
+            return JsonConvert.DeserializeObject<T>(result);
         }
         public PositionsResponse GetPositions() => 
             GetApiResponse<PositionsResponse>(POSITIONS_URI, "2");
@@ -149,8 +141,8 @@ namespace IG.Csharp.Api.Client.Rest
             var response = GetApiResponse<TransactionsResponse>($"{uri}&pageNumber={pageNumber}", "2");
             transactions.AddRange(response.Transactions);
             Thread.Sleep(TimeSpan.FromSeconds(1));
-            if (response.Metadata.pageData.pageNumber < response.Metadata.pageData.totalPages)
-                GetTransactions(transactions, uri, response.Metadata.pageData.pageNumber + 1);
+            if (response.MetaData.PageData.PageNumber < response.MetaData.PageData.TotalPages)
+                GetTransactions(transactions, uri, response.MetaData.PageData.PageNumber + 1);
             return transactions;
         }
         public ActivitiesResponse GetActivities(DateTime from) => 
@@ -211,14 +203,14 @@ namespace IG.Csharp.Api.Client.Rest
             GetApiResponse<SearchMarketResponse>($"{MARKETS_URI}?searchTerm={WebUtility.UrlEncode(searchTem)}", "1");
         public void SavePriceDataToFile(string epic, Resolution resolution, DateTime from, DateTime to, string filePathToSave)
         {
-            var startDate = from.ToString("yyyy-MM-dd") + "T00%3A00%3A00";
-            var endDate = to.ToString("yyyy-MM-dd") + "T00%3A00%3A00";
+            var startDate = from.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
+            var endDate = to.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
             var uri = $"{PRICES_URI}/{epic}?resolution={resolution}&from={startDate}&to={endDate}";
 
             var response = GetApiResponse<HistoricalPricesResponse>(uri, "3");
             File.WriteAllLines(filePathToSave,
-                response.prices.Select(x =>
-                $"{x.snapshotTime},{x.openPrice.ask},{x.openPrice.bid}")
+                response.Prices.Select(x =>
+                $"{x.SnapshotTime},{x.OpenPrice.Ask},{x.OpenPrice.Bid}")
                 .ToList());
         }
     }

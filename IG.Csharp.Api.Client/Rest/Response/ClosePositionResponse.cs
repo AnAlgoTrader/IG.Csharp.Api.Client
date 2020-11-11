@@ -6,6 +6,7 @@ namespace IG.Csharp.Api.Client.Rest.Response
     {
         [JsonProperty("dealReference")]
         public string DealReference { get; set; }
+
         [JsonProperty("errorCode")]
         public string ErrorCode { get; set; }
     }

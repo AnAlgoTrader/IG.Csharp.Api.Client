@@ -1,69 +1,69 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace IG.Csharp.Api.Client.Rest.Response
 {
     public class TradeConfirmResponse
     {
         [JsonProperty("date")]
-        public DateTime Date;
+        public DateTime Date { get; set; }
 
         [JsonProperty("status")]
-        public object Status;
+        public object Status { get; set; }
 
         [JsonProperty("reason")]
-        public string Reason;
+        public string Reason { get; set; }
 
         [JsonProperty("dealStatus")]
-        public string DealStatus;
+        public string DealStatus { get; set; }
 
         [JsonProperty("epic")]
-        public string Epic;
+        public string Epic { get; set; }
 
         [JsonProperty("expiry")]
-        public object Expiry;
+        public object Expiry { get; set; }
 
         [JsonProperty("dealReference")]
-        public string DealReference;
+        public string DealReference { get; set; }
 
         [JsonProperty("dealId")]
-        public string DealId;
+        public string DealId { get; set; }
 
         [JsonProperty("affectedDeals")]
-        public List<object> AffectedDeals;
+        public ReadOnlyCollection<string> AffectedDeals { get; }
 
         [JsonProperty("level")]
-        public object Level;
+        public object Level { get; set; }
 
         [JsonProperty("size")]
-        public object Size;
+        public object Size { get; set; }
 
         [JsonProperty("direction")]
-        public string Direction;
+        public string Direction { get; set; }
 
         [JsonProperty("stopLevel")]
-        public object StopLevel;
+        public object StopLevel { get; set; }
 
         [JsonProperty("limitLevel")]
-        public object LimitLevel;
+        public object LimitLevel { get; set; }
 
         [JsonProperty("stopDistance")]
-        public object StopDistance;
+        public object StopDistance { get; set; }
 
         [JsonProperty("limitDistance")]
-        public object LimitDistance;
+        public object LimitDistance { get; set; }
 
         [JsonProperty("guaranteedStop")]
-        public bool GuaranteedStop;
+        public bool GuaranteedStop { get; set; }
 
         [JsonProperty("trailingStop")]
-        public bool TrailingStop;
+        public bool TrailingStop { get; set; }
 
         [JsonProperty("profit")]
-        public object Profit;
+        public object Profit { get; set; }
 
         [JsonProperty("profitCurrency")]
-        public object ProfitCurrency;
+        public object ProfitCurrency { get; set; }
     }
 }

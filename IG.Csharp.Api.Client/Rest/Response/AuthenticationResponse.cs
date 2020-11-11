@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace IG.Csharp.Api.Client.Rest.Response
 {
@@ -14,7 +15,7 @@ namespace IG.Csharp.Api.Client.Rest.Response
         public string IgCompany { get; set; }
 
         [JsonProperty("kycFormUrl")]
-        public string KycFormUrl { get; set; }
+        public Uri KycFormUrl { get; set; }
 
         [JsonProperty("encrypted")]
         public bool Encrypted { get; set; }
@@ -35,7 +36,7 @@ namespace IG.Csharp.Api.Client.Rest.Response
         public string LightstreamerEndpoint { get; set; }
 
         [JsonProperty("accounts")]
-        public List<AccountDetails> Accounts { get; set; }
+        public ReadOnlyCollection<AccountDetails> Accounts { get; }
 
         [JsonProperty("clientId")]
         public string ClientId { get; set; }

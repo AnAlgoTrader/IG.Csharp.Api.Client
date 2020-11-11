@@ -1,15 +1,15 @@
 ﻿using IG.Csharp.Api.Client.Rest.Model;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace IG.Csharp.Api.Client.Rest.Response
 {
     public class TransactionsResponse
     {
         [JsonProperty("transactions")]
-        public List<Transaction> Transactions;
+        public ReadOnlyCollection<Transaction> Transactions { get; set; }
 
         [JsonProperty("metadata")]
-        public Metadata Metadata;
+        public MetadataItem MetaData { get; set; }
     }
 }

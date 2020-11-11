@@ -16,7 +16,7 @@ namespace IG.Csharp.Api.Client.Test
             var response = restClient.Authenticate();
 
             var watchLists = restClient.GetWatchLists();
-            var watchList = restClient.GetInstrumentsByWatchlistId(watchLists.watchlists[0].Id);
+            var watchList = restClient.GetInstrumentsByWatchlistId(watchLists.Watchlists[0].Id);
         }
     }
 }

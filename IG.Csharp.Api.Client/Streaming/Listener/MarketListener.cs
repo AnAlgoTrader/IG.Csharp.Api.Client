@@ -2,6 +2,7 @@
 using IG.Csharp.Api.Client.Streaming.Model;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics.Contracts;
 
 namespace IG.Csharp.Api.Client.Streaming.Listener
 {
@@ -41,9 +42,11 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
 
         void SubscriptionListener.onItemUpdate(ItemUpdate itemUpdate)
         {
+            Contract.Requires(itemUpdate != null);
+
             var json = JsonConvert.SerializeObject(itemUpdate.Fields, Formatting.Indented);
             var marketData = JsonConvert.DeserializeObject<MarketData>(json);
-            marketData.Epic = itemUpdate.ItemName.Replace("L1:", string.Empty);
+            marketData.Epic = itemUpdate.ItemName.Replace("L1:", string.Empty, StringComparison.InvariantCulture);
             OnMarketUpdateHandler(new MarketDataEventArgs(marketData));
         }
 

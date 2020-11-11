@@ -1,96 +1,96 @@
-﻿using IG.Csharp.Api.Client.Rest.Model;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace IG.Csharp.Api.Client.Rest.Model
 {
     public class Instrument
     {
         [JsonProperty("epic")]
-        public string Epic;
+        public string Epic { get; set; }
 
         [JsonProperty("expiry")]
-        public string Expiry;
+        public string Expiry { get; set; }
 
         [JsonProperty("name")]
-        public string Name;
+        public string Name { get; set; }
 
         [JsonProperty("forceOpenAllowed")]
-        public bool ForceOpenAllowed;
+        public bool ForceOpenAllowed { get; set; }
 
         [JsonProperty("stopsLimitsAllowed")]
-        public bool StopsLimitsAllowed;
+        public bool StopsLimitsAllowed { get; set; }
 
         [JsonProperty("lotSize")]
-        public double LotSize;
+        public double LotSize { get; set; }
 
         [JsonProperty("unit")]
-        public string Unit;
+        public string Unit { get; set; }
 
         [JsonProperty("type")]
-        public string Type;
+        public string Type { get; set; }
 
         [JsonProperty("controlledRiskAllowed")]
-        public bool ControlledRiskAllowed;
+        public bool ControlledRiskAllowed { get; set; }
 
         [JsonProperty("streamingPricesAvailable")]
-        public bool StreamingPricesAvailable;
+        public bool StreamingPricesAvailable { get; set; }
 
         [JsonProperty("marketId")]
-        public string MarketId;
+        public string MarketId { get; set; }
 
         [JsonProperty("currencies")]
-        public List<Currency> Currencies;
+        public ReadOnlyCollection<Currency> Currencies { get; set; }
 
         [JsonProperty("sprintMarketsMinimumExpiryTime")]
-        public object SprintMarketsMinimumExpiryTime;
+        public object SprintMarketsMinimumExpiryTime { get; set; }
 
         [JsonProperty("sprintMarketsMaximumExpiryTime")]
-        public object SprintMarketsMaximumExpiryTime;
+        public object SprintMarketsMaximumExpiryTime { get; set; }
 
         [JsonProperty("marginDepositBands")]
-        public List<MarginDepositBand> MarginDepositBands;
+        public ReadOnlyCollection<MarginDepositBand> MarginDepositBands { get; }
 
         [JsonProperty("marginFactor")]
-        public int MarginFactor;
+        public int MarginFactor { get; set; }
 
         [JsonProperty("marginFactorUnit")]
-        public string MarginFactorUnit;
+        public string MarginFactorUnit { get; set; }
 
         [JsonProperty("slippageFactor")]
-        public SlippageFactor SlippageFactor;
+        public SlippageFactor SlippageFactor { get; set; }
 
         [JsonProperty("limitedRiskPremium")]
-        public LimitedRiskPremium LimitedRiskPremium;
+        public LimitedRiskPremium LimitedRiskPremium { get; set; }
 
         [JsonProperty("openingHours")]
-        public object OpeningHours;
+        public object OpeningHours { get; set; }
 
         [JsonProperty("expiryDetails")]
-        public ExpiryDetail ExpiryDetails;
+        public ExpiryDetail ExpiryDetails { get; set; }
 
         [JsonProperty("rolloverDetails")]
-        public object RolloverDetails;
+        public object RolloverDetails { get; set; }
 
         [JsonProperty("newsCode")]
-        public string NewsCode;
+        public string NewsCode { get; set; }
 
         [JsonProperty("chartCode")]
-        public object ChartCode;
+        public object ChartCode { get; set; }
 
         [JsonProperty("country")]
-        public string Country;
+        public string Country { get; set; }
 
         [JsonProperty("valueOfOnePip")]
-        public object ValueOfOnePip;
+        public object ValueOfOnePip { get; set; }
 
         [JsonProperty("onePipMeans")]
-        public object OnePipMeans;
+        public object OnePipMeans { get; set; }
 
         [JsonProperty("contractSize")]
-        public object ContractSize;
+        public object ContractSize { get; set; }
 
         [JsonProperty("specialInfo")]
-        public List<string> SpecialInfo;
+        public ReadOnlyCollection<string> SpecialInfo { get; set; }
     }
 }

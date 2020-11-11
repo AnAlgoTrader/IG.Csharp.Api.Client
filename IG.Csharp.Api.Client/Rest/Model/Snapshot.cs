@@ -5,42 +5,42 @@ namespace IG.Csharp.Api.Client.Rest.Model
     public class Snapshot
     {
         [JsonProperty("marketStatus")]
-        public string MarketStatus;
+        public string MarketStatus { get; set; }
 
         [JsonProperty("netChange")]
-        public int NetChange;
+        public int NetChange { get; set; }
 
         [JsonProperty("percentageChange")]
-        public double PercentageChange;
+        public double PercentageChange { get; set; }
 
         [JsonProperty("updateTime")]
-        public string UpdateTime;
+        public string UpdateTime { get; set; }
 
         [JsonProperty("delayTime")]
-        public int DelayTime;
+        public int DelayTime { get; set; }
 
         [JsonProperty("bid")]
-        public double Bid;
+        public double Bid { get; set; }
 
         [JsonProperty("offer")]
-        public double Offer;
+        public double Offer { get; set; }
 
         [JsonProperty("high")]
-        public double High;
+        public double High { get; set; }
 
         [JsonProperty("low")]
-        public double Low;
+        public double Low { get; set; }
 
         [JsonProperty("binaryOdds")]
-        public object BinaryOdds;
+        public object BinaryOdds { get; set; }
 
         [JsonProperty("decimalPlacesFactor")]
-        public int DecimalPlacesFactor;
+        public int DecimalPlacesFactor { get; set; }
 
         [JsonProperty("scalingFactor")]
-        public int ScalingFactor;
+        public int ScalingFactor { get; set; }
 
         [JsonProperty("controlledRiskExtraSpread")]
-        public int ControlledRiskExtraSpread;
+        public int ControlledRiskExtraSpread { get; set; }
     }
 }

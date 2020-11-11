@@ -1,6 +1,6 @@
 ﻿namespace IG.Csharp.Api.Client.Rest.Model
 {
-    public class Epics
+    public static class Epics
     {
         public const string FTSE100 = "IX.D.FTSE.DAILY.IP";
         public const string FRANCE40 = "IX.D.CAC.DAILY.IP";
@@ -32,11 +32,7 @@
         public const string AMAZON = "UA.D.AMZN.DAILY.IP";
         public const string APPLE = "UA.D.AAPL.DAILY.IP";
         public const string TESLA = "UD.D.TSLA.DAILY.IP";
-
-        public static string[] CRYPTO = new string[] { BITCOIN_USD, ETHER_USD, LITECOIN_USD };
-        public static string[] FOREX = new string[] { EUR_GBP, EUR_USD , GBP_USD , USD_JPY };
-        public static string[] INDICES = new string[] { FTSE100, GERMANY30, WALLSTREET, SPOT_GOLD, OIL_US_CRUDE, OIL_BRENT_CRUDE };
-
+        
         public const string FTSE100_WEEKEND = "IX.D.SUNFUN.DAILY.IP";
     }
 }
