@@ -36,7 +36,7 @@ namespace IG.Csharp.Api.Client.Rest.Response
         public string LightstreamerEndpoint { get; set; }
 
         [JsonProperty("accounts")]
-        public ReadOnlyCollection<AccountDetails> Accounts { get; }
+        public ReadOnlyCollection<AccountDetails> Accounts { get; set; }
 
         [JsonProperty("clientId")]
         public string ClientId { get; set; }

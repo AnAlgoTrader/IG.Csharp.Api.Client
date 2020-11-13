@@ -207,9 +207,23 @@ namespace IG.Csharp.Api.Client.Rest
             var endDate = to.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
             var uri = $"{PRICES_URI}/{epic}?resolution={resolution}&from={startDate}&to={endDate}";
 
+            var prices = new List<Price>();
             var response = GetApiResponse<HistoricalPricesResponse>(uri, "3");
+            prices.AddRange(response.Prices);
+            
+            var totalPages = response.Metadata.PageData.TotalPages;
+            if(totalPages > 1)
+            {
+                for (int page = 2; page <= totalPages; page++)
+                {
+                    var nextUri = uri + $"&pageNumber={page}";
+                    response = GetApiResponse<HistoricalPricesResponse>(nextUri, "3");
+                    prices.AddRange(response.Prices);
+                }
+            }      
+
             File.WriteAllLines(filePathToSave,
-                response.Prices.Select(x =>
+                prices.Select(x =>
                 $"{x.SnapshotTime},{x.OpenPrice.Ask},{x.OpenPrice.Bid}")
                 .ToList());
         }

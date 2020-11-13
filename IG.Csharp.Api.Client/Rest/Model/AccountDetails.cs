@@ -6,12 +6,16 @@ namespace IG.Csharp.Api.Client.Rest.Model
     {
         [JsonProperty("accountId")]
         public string AccountId { get; set; }
+
         [JsonProperty("accountName")]
         public string AccountName { get; set; }
+
         [JsonProperty("preferred")]
         public bool Preferred { get; set; }
+
         [JsonProperty("accountType")]
         public string AccountType { get; set; }
+
         [JsonProperty("balance")]
         public Balance Balance { get; set; }
     }

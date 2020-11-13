@@ -7,7 +7,7 @@ namespace IG.Csharp.Api.Client.Rest.Response
     public class HistoricalPricesResponse
     {
         [JsonProperty("prices")]
-        public ReadOnlyCollection<Price> Prices { get; }
+        public ReadOnlyCollection<Price> Prices { get; set; }
 
         [JsonProperty("instrumentType")]
         public string InstrumentType { get; set; }
