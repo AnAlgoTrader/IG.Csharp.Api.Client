@@ -32,18 +32,22 @@ namespace IG.Csharp.Api.Client.Streaming
         }
         public void Disconnect()
         {
-            if(_accountSubscription != null) _lsClient.unsubscribe(_accountSubscription);
-            if(_marketSubscription != null) _lsClient.unsubscribe(_marketSubscription);
+            if (_accountSubscription != null) _lsClient.unsubscribe(_accountSubscription);
+            if (_marketSubscription != null) _lsClient.unsubscribe(_marketSubscription);
             _lsClient.disconnect();
+        }
+        public string GetStatus()
+        {
+            return _lsClient.Status;
         }
         public void SubcribeToAccountUpdates(AccountListener accountListener)
         {
-            _accountSubscription= new Subscription("MERGE", new[] { "ACCOUNT:" + _accountId }, new[] { 
-                "FUNDS", "PNL", "DEPOSIT", "USED_MARGIN", 
+            _accountSubscription = new Subscription("MERGE", new[] { "ACCOUNT:" + _accountId }, new[] {
+                "FUNDS", "PNL", "DEPOSIT", "USED_MARGIN",
                 "AMOUNT_DUE", "AVAILABLE_CASH" });
             _accountSubscription.addListener(accountListener);
             _lsClient.subscribe(_accountSubscription);
-        }        
+        }
         public void SubscribeToMarketUpdates(MarketListener marketListener, List<string> epics)
         {
             var items = epics.Select(e => $"L1:{e}").ToArray();
