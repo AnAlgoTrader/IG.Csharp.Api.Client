@@ -50,7 +50,7 @@ namespace IG.Csharp.Api.Client.Streaming
         }
         public void SubscribeToMarketUpdates(MarketListener marketListener, List<string> epics)
         {
-            var items = epics.Select(e => $"L1:{e}").ToArray();
+            var items = epics.Select(e => $"MARKET:{e}").ToArray();
             _marketSubscription = new Subscription("MERGE", items, new[] {
                     "MID_OPEN", "HIGH", "LOW", "CHANGE", "CHANGE_PCT", "UPDATE_TIME",
                     "MARKET_DELAY", "MARKET_STATE", "BID", "OFFER"
