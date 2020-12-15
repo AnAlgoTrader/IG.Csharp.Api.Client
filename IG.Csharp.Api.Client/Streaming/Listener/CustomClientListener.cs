@@ -22,6 +22,7 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
         }
         void ClientListener.onPropertyChange(string property)
         {            
+            OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Property change:{property}"));
         }
         void ClientListener.onServerError(int errorCode, string errorMessage)
         {
