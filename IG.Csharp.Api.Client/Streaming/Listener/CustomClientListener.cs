@@ -21,7 +21,7 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
             OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Listen start"));
         }
         void ClientListener.onPropertyChange(string property)
-        {            
+        {
             OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Property change:{property}"));
         }
         void ClientListener.onServerError(int errorCode, string errorMessage)
@@ -31,7 +31,7 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
         }
         void ClientListener.onStatusChange(string status)
         {
-            OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Status: {status}"));
+            OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"{status}"));
         }
     }
 }
