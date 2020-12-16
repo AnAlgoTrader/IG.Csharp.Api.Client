@@ -13,6 +13,7 @@ namespace IG.Csharp.Api.Client.Streaming
         private readonly string _accountId;
         private Subscription _accountSubscription;
         private Subscription _marketSubscription;
+        private Subscription _tradeSubscription;
 
         public IgStreamingApiClient(AuthenticationResponse authenticationResponse)
         {
@@ -34,6 +35,7 @@ namespace IG.Csharp.Api.Client.Streaming
         {
             if (_accountSubscription != null) _lsClient.unsubscribe(_accountSubscription);
             if (_marketSubscription != null) _lsClient.unsubscribe(_marketSubscription);
+            if (_tradeSubscription != null) _lsClient.unsubscribe(_tradeSubscription);
             _lsClient.disconnect();
         }
         public string GetStatus()
@@ -57,6 +59,14 @@ namespace IG.Csharp.Api.Client.Streaming
                 });
             _marketSubscription.addListener(marketListener);
             _lsClient.subscribe(_marketSubscription);
+        }
+        public void SubscribeToTradeUpdates(TradeListener tradeListener)
+        {
+            _tradeSubscription = new Subscription("DISTINCT",
+                new[] { "TRADE:" + _accountId },
+                new[] { "CONFIRMS", "OPU", "WOU" });
+            _tradeSubscription.addListener(tradeListener);
+            _lsClient.subscribe(_tradeSubscription);
         }
     }
 }

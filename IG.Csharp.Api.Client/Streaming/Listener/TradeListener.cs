@@ -1,11 +1,18 @@
 using System;
 using com.lightstreamer.client;
 using Newtonsoft.Json;
+using IG.Csharp.Api.Client.Streaming.Model;
 
 namespace IG.Csharp.Api.Client.Streaming.Listener
 {
     public class TradeListener : SubscriptionListener
     {
+        protected void OnItemUpdateHandler(TradeListenerEventArgs e)
+        {
+            OnTradeUpdate?.Invoke(this, e);
+        }
+        public event EventHandler<TradeListenerEventArgs> OnTradeUpdate;
+
         void SubscriptionListener.onClearSnapshot(string itemName, int itemPos)
         {
             throw new NotImplementedException();
@@ -23,7 +30,7 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
 
         void SubscriptionListener.onEndOfSnapshot(string itemName, int itemPos)
         {
-            throw new NotImplementedException();
+
         }
 
         void SubscriptionListener.onItemLostUpdates(string itemName, int itemPos, int lostUpdates)
@@ -34,7 +41,7 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
         void SubscriptionListener.onItemUpdate(ItemUpdate itemUpdate)
         {
             var json = JsonConvert.SerializeObject(itemUpdate.Fields, Formatting.Indented);
-            Console.WriteLine(json);
+            OnItemUpdateHandler(new TradeListenerEventArgs(JsonConvert.DeserializeObject<TradeListenerData>(json)));
         }
 
         void SubscriptionListener.onListenEnd(Subscription subscription)
