@@ -13,10 +13,10 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         public string Epic { get; set; }
 
         [JsonProperty("stopLevel")]
-        public double StopLevel { get; set; }
+        public double? StopLevel { get; set; }
 
         [JsonProperty("limitLevel")]
-        public double LimitLevel { get; set; }
+        public double? LimitLevel { get; set; }
 
         [JsonProperty("dealReference")]
         public string DealReference { get; set; }
@@ -25,10 +25,10 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         public string DealId { get; set; }
 
         [JsonProperty("limitDistance")]
-        public double LimitDistance { get; set; }
+        public double? LimitDistance { get; set; }
 
         [JsonProperty("stopDistance")]
-        public double StopDistance { get; set; }
+        public double? StopDistance { get; set; }
 
         [JsonProperty("expiry")]
         public string Expiry { get; set; }
@@ -37,7 +37,7 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         public List<AffectedDeal> AffectedDeals { get; set; }
 
         [JsonProperty("dealStatus")]
-        public string DealStatus { get; set; }
+        public StreamingDealStatus DealStatus { get; set; }
 
         [JsonProperty("guaranteedStop")]
         public bool GuaranteedStop { get; set; }
@@ -52,13 +52,13 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         public string Reason { get; set; }
 
         [JsonProperty("status")]
-        public string Status { get; set; }
+        public StreamingStatus Status { get; set; }
 
         [JsonProperty("size")]
         public long Size { get; set; }
 
         [JsonProperty("profit")]
-        public double Profit { get; set; }
+        public double? Profit { get; set; }
 
         [JsonProperty("profitCurrency")]
         public string ProfitCurrency { get; set; }

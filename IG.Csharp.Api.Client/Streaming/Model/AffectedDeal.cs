@@ -9,6 +9,6 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         public string DealId { get; set; }
 
         [JsonProperty("status")]
-        public string Status { get; set; }
+        public StreamingStatus Status { get; set; }
     }
 }

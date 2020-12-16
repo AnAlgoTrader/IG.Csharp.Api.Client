@@ -8,15 +8,19 @@
     public enum StreamingStatus
     {
         OPEN,
+        OPENED,
         UPDATED,
         AMENDED,
         CLOSED,
         DELETED,
+        PARTIALLY_CLOSED,
+        FULLY_CLOSED
     }
     public enum StreamingDealStatus
     {
         ACCEPTED,
         REJECTED,
+
     }
     public enum ChartScale
     {
@@ -94,7 +98,7 @@
 
     public enum TransactionType
     {
-        ALL, 
+        ALL,
         ALL_DEAL,
         DEPOSIT,
         WITHDRAWAL
