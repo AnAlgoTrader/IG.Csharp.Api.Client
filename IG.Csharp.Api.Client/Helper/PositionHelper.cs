@@ -1,7 +1,9 @@
 ﻿using IG.Csharp.Api.Client.Rest.Model;
 using IG.Csharp.Api.Client.Rest.Response;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace IG.Csharp.Api.Client.Helper
 {
@@ -35,6 +37,24 @@ namespace IG.Csharp.Api.Client.Helper
 
             if (openPosition.Position.Direction == "BUY") return (marketData.Bid - openPosition.Position.Level) * openPosition.Position.Size;
             else return (openPosition.Position.Level - marketData.Offer) * openPosition.Position.Size;
+        }
+        public static void CalculatePL(List<OpenPosition> positions, Streaming.Model.MarketData marketData)
+        {
+            positions.ForEach(position =>
+            {
+                position.Position.ProfitAndLoss = CalculatePL(position, marketData).Value;
+            });
+        }
+        public static OpenPosition GetLatestPositionBySide(List<OpenPosition> positions, TradeSide tradeSide, string epic)
+        {
+            var marketPositions = positions.Where(x => x.Position.Direction == tradeSide.ToString() && x.Market.Epic == epic).ToList();
+            if (marketPositions.Any())
+            {
+                return tradeSide == TradeSide.BUY ?
+                    positions.OrderBy(x => x.Position.Level).FirstOrDefault() :
+                    positions.OrderByDescending(x => x.Position.Level).FirstOrDefault();
+            }
+            return null;
         }
     }
 }

@@ -14,15 +14,15 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
 
         void ClientListener.onListenEnd(LightstreamerClient client)
         {
-            OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Listen end"));
+            //OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Listen end"));
         }
         void ClientListener.onListenStart(LightstreamerClient client)
         {
-            OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Listen start"));
+            //OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Listen start"));
         }
         void ClientListener.onPropertyChange(string property)
         {
-            OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Property change:{property}"));
+            //OnClientUpdateHandler(new ClientListenerEventArgs(DateTime.Now, $"Property change:{property}"));
         }
         void ClientListener.onServerError(int errorCode, string errorMessage)
         {
