@@ -46,7 +46,7 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         public bool TrailingStop { get; set; }
 
         [JsonProperty("level")]
-        public double Level { get; set; }
+        public double? Level { get; set; }
 
         [JsonProperty("reason")]
         public string Reason { get; set; }

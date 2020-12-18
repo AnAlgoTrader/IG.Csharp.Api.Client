@@ -25,5 +25,8 @@ namespace IG.Csharp.Api.Client.Rest.Model
 
         [JsonProperty("description")]
         public string Description { get; set; }
+
+        [JsonProperty("details")]
+        public ActivityDetails Details { get; set; }
     }
 }

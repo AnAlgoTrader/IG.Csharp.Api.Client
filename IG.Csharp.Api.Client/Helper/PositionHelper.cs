@@ -40,6 +40,8 @@ namespace IG.Csharp.Api.Client.Helper
         }
         public static void CalculatePL(List<OpenPosition> positions, Streaming.Model.MarketData marketData)
         {
+            Contract.Requires(positions != null);
+
             positions.ForEach(position =>
             {
                 position.Position.ProfitAndLoss = CalculatePL(position, marketData).Value;

@@ -93,7 +93,8 @@
     public enum OrderType
     {
         LIMIT,
-        STOP
+        STOP,
+        MARKET
     }
 
     public enum TransactionType

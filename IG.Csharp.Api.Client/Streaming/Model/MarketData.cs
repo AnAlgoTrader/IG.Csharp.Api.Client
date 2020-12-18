@@ -21,9 +21,9 @@ namespace IG.Csharp.Api.Client.Streaming.Model
         [JsonProperty("MarketState")]
         public string MarketState { get; set; }
         [JsonProperty("Bid")]
-        public double? Bid { get; set; }
+        public double Bid { get; set; }
         [JsonProperty("Offer")]
-        public double? Offer { get; set; }
+        public double Offer { get; set; }
 
         public string Epic { get; set; }
     }
