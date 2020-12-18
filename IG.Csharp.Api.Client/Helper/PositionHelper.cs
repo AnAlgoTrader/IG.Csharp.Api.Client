@@ -53,8 +53,8 @@ namespace IG.Csharp.Api.Client.Helper
             if (marketPositions.Any())
             {
                 return tradeSide == TradeSide.BUY ?
-                    positions.OrderBy(x => x.Position.Level).FirstOrDefault() :
-                    positions.OrderByDescending(x => x.Position.Level).FirstOrDefault();
+                    marketPositions.OrderBy(x => x.Position.Level).FirstOrDefault() :
+                    marketPositions.OrderByDescending(x => x.Position.Level).FirstOrDefault();
             }
             return null;
         }
