@@ -47,6 +47,11 @@ namespace IG.Csharp.Api.Client.Rest
             throw new NotImplementedException();
         }
 
+        public ActivitiesResponse GetActivities(DateTime from, bool detailed)
+        {
+            throw new NotImplementedException();
+        }
+
         public T GetApiResponse<T>(string query, string version)
         {
             throw new NotImplementedException();

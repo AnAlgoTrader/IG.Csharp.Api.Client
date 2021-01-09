@@ -27,6 +27,6 @@ namespace IG.Csharp.Api.Client.Rest
         MarketNavigationResponse GetMarketNavigation(string id);
         MarketDetailsResponse GetMarketDetails(string epic);
         SearchMarketResponse SearchMarkets(string searchTem);
+        ActivitiesResponse GetActivities(DateTime from, bool detailed);
     }
 }
-
