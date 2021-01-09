@@ -16,7 +16,7 @@ using System.Threading;
 
 namespace IG.Csharp.Api.Client.Rest
 {
-    public class IgRestApiClient
+    public class IgRestApiClient : IRestApiClient
     {
         private readonly string _baseUri;
         private readonly string _username;
