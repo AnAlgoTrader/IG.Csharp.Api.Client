@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
+using IG.Csharp.Api.Client.Rest;
 using IG.Csharp.Api.Client.Rest.Model;
 using IG.Csharp.Api.Client.Rest.Request;
 using IG.Csharp.Api.Client.Rest.Response;
 
-namespace IG.Csharp.Api.Client.Rest
+namespace IG.Csharp.Api.Client.BackTest
 {
     public class BackTestingClient : IRestApiClient
     {
-        public BackTestingClient()
-        {
-        }
-
         public AuthenticationResponse Authenticate()
         {
             throw new NotImplementedException();
@@ -48,16 +45,6 @@ namespace IG.Csharp.Api.Client.Rest
         }
 
         public ActivitiesResponse GetActivities(DateTime from, bool detailed)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetApiResponse<T>(string query, string version)
-        {
-            throw new NotImplementedException();
-        }
-
-        public AuthenticationResponse GetAuthenticationResponseFromDisk()
         {
             throw new NotImplementedException();
         }
@@ -112,27 +99,7 @@ namespace IG.Csharp.Api.Client.Rest
             throw new NotImplementedException();
         }
 
-        public T PostApiResponse<T>(string endpoint, string content, string version, string method = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveAuthentication(AuthenticationResponse authenticationResponse)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SavePriceDataToFile(string epic, Resolution resolution, DateTime fromDate, DateTime toDate, string filePathToSave)
-        {
-            throw new NotImplementedException();
-        }
-
         public SearchMarketResponse SearchMarkets(string searchTem)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool ShouldAuthenticate()
         {
             throw new NotImplementedException();
         }
