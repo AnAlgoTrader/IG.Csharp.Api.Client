@@ -104,4 +104,13 @@
         DEPOSIT,
         WITHDRAWAL
     }
+
+    //enum for testing purposes
+    public enum PositionStatus
+    {
+        OPEN,
+        LIMIT_REACHED,
+        STOP_REACHED,
+        PROFIT_TAKEN
+    }
 }

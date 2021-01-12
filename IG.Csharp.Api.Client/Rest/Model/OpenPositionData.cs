@@ -2,7 +2,7 @@
 
 namespace IG.Csharp.Api.Client.Rest.Model
 {
-    public class OpenPositionData
+    public partial class OpenPositionData
     {
         [JsonProperty("contractSize")]
         public double ContractSize { get; set; }
@@ -45,5 +45,8 @@ namespace IG.Csharp.Api.Client.Rest.Model
 
         [JsonProperty("profitAndLoss")]
         public double ProfitAndLoss { get; set; }
+
+        //status for testing purposes
+        public PositionStatus Status { get; set; }
     }
 }
