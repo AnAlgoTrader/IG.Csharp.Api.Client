@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using IG.Csharp.Api.Client.Rest;
 using IG.Csharp.Api.Client.Rest.Model;
 using IG.Csharp.Api.Client.Rest.Request;
@@ -11,9 +12,11 @@ namespace IG.Csharp.Api.Client.BackTest
     public class BackTestingClient : IRestApiClient
     {
         private AccountDetails _accountDetails;
+        private List<OpenPosition> _positions;
 
         public BackTestingClient(string accountId, Balance balance)
         {
+            _positions = new List<OpenPosition>();
             SetAccountDetails(accountId, balance);
         }
 
@@ -88,7 +91,10 @@ namespace IG.Csharp.Api.Client.BackTest
 
         public PositionsResponse GetPositions()
         {
-            throw new NotImplementedException();
+            return new PositionsResponse
+            {
+                Positions = _positions.Where(x => x.Position.Status == PositionStatus.OPEN).ToList()
+            };
         }
 
         public TradeConfirmResponse GetTradeConfirm(string dealReference)
