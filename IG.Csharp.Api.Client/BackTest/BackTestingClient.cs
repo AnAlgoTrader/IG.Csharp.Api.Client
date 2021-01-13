@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using IG.Csharp.Api.Client.Rest;
 using IG.Csharp.Api.Client.Rest.Model;
 using IG.Csharp.Api.Client.Rest.Request;
@@ -9,9 +10,25 @@ namespace IG.Csharp.Api.Client.BackTest
 {
     public class BackTestingClient : IRestApiClient
     {
+        private AccountDetails _accountDetails;
+
+        public BackTestingClient(string accountId, Balance balance)
+        {
+            SetAccountDetails(accountId, balance);
+        }
+
+        public void SetAccountDetails(string accountId, Balance balance)
+        {
+            _accountDetails = new AccountDetails
+            {
+                AccountId = accountId,
+                Balance = balance
+            };
+        }
+
         public AuthenticationResponse Authenticate()
         {
-            throw new NotImplementedException();
+            return new AuthenticationResponse();
         }
 
         public ClosePositionResponse ClosePosition(ClosePositionRequest request, string version)
@@ -41,9 +58,14 @@ namespace IG.Csharp.Api.Client.BackTest
 
         public AccountDetailsResponse GetAccounts()
         {
-            throw new NotImplementedException();
+            var accounts = new List<AccountDetails>(){
+                _accountDetails
+            };
+            return new AccountDetailsResponse
+            {
+                Accounts = new ReadOnlyCollection<AccountDetails>(accounts)
+            };
         }
-
         public ActivitiesResponse GetActivities(DateTime from, bool detailed)
         {
             throw new NotImplementedException();
