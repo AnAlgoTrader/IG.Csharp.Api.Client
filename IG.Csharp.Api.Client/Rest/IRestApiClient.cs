@@ -28,6 +28,9 @@ namespace IG.Csharp.Api.Client.Rest
         MarketDetailsResponse GetMarketDetails(string epic);
         SearchMarketResponse SearchMarkets(string searchTem);
         ActivitiesResponse GetActivities(DateTime from, bool detailed);
+
+        #region BackTesting
         void SetCurrentMarketData(Candle data);
+        #endregion
     }
 }
