@@ -252,5 +252,11 @@ namespace IG.Csharp.Api.Client.Rest
                 $"{x.SnapshotTime},{x.OpenPrice.Ask},{x.OpenPrice.Bid}")
                 .ToList());
         }
+
+        public void SetCurrentMarketData(Candle data)
+        {
+            //backtesting method, do not use from this class
+            throw new NotImplementedException();
+        }
     }
 }
