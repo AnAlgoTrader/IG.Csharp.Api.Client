@@ -13,5 +13,6 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public double Volume { get; set; }
         public double Bid { get; set; }
         public double Offer { get; set; }
+        public double Indicator { get; set; }
     }
 }
