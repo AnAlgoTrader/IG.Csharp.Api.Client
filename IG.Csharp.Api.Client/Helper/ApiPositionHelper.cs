@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace IG.Csharp.Api.Client.Helper
 {
-    public static class PositionHelper
+    public static class ApiPositionHelper
     {
         public static double CalculatePL(TradeSide tradeSide, double size, double level, double buyPrice, double sellPrice)
         {
