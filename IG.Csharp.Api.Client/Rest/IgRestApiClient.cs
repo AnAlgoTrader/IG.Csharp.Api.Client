@@ -79,13 +79,13 @@ namespace IG.Csharp.Api.Client.Rest
         }
         private bool ShouldAuthenticate() => _authenticationResponse == null ||
                 (DateTime.Now - _authenticationResponse.Date).TotalHours >= 5;
-        private static AuthenticationResponse GetAuthenticationResponseFromDisk()
+        private AuthenticationResponse GetAuthenticationResponseFromDisk()
         {
-            try { return JsonConvert.DeserializeObject<AuthenticationResponse>(File.ReadAllText("authenticationResponse.json")); }
+            try { return JsonConvert.DeserializeObject<AuthenticationResponse>(File.ReadAllText(_username +".authenticationResponse.json")); }
             catch (FileNotFoundException) { return null; }
         }
-        private static void SaveAuthentication(AuthenticationResponse authenticationResponse) =>
-            File.WriteAllText("authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
+        private void SaveAuthentication(AuthenticationResponse authenticationResponse) =>
+            File.WriteAllText(_username +".authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
         private T GetApiResponse<T>(string query, string version)
         {
             using var client = new HttpClient();
