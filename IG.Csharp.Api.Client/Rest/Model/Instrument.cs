@@ -52,7 +52,7 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public ReadOnlyCollection<MarginDepositBand> MarginDepositBands { get; }
 
         [JsonProperty("marginFactor")]
-        public int MarginFactor { get; set; }
+        public double MarginFactor { get; set; }
 
         [JsonProperty("marginFactorUnit")]
         public string MarginFactorUnit { get; set; }
