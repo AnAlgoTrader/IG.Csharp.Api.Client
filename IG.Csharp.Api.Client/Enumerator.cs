@@ -104,6 +104,11 @@
         DEPOSIT,
         WITHDRAWAL
     }
+    public enum MarginFactorUnit
+    {
+        PERCENTAGE,
+        POINTS
+    }
 
     //enum for testing purposes
     public enum PositionStatus

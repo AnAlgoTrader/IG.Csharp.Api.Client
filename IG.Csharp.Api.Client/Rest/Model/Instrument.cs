@@ -55,7 +55,7 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public double MarginFactor { get; set; }
 
         [JsonProperty("marginFactorUnit")]
-        public string MarginFactorUnit { get; set; }
+        public MarginFactorUnit MarginFactorUnit { get; set; }
 
         [JsonProperty("openingHours")]
         public object OpeningHours { get; set; }
