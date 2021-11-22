@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace IG.Csharp.Api.Client.Rest.Model
 {
-    public class Instrument
+    public partial class Instrument
     {
         [JsonProperty("epic")]
         public string Epic { get; set; }
@@ -22,7 +22,7 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public bool StopsLimitsAllowed { get; set; }
 
         [JsonProperty("lotSize")]
-        public double LotSize { get; set; }
+        public long LotSize { get; set; }
 
         [JsonProperty("unit")]
         public string Unit { get; set; }
@@ -40,7 +40,7 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public string MarketId { get; set; }
 
         [JsonProperty("currencies")]
-        public ReadOnlyCollection<Currency> Currencies { get; set; }
+        public List<Currency> Currencies { get; set; }
 
         [JsonProperty("sprintMarketsMinimumExpiryTime")]
         public object SprintMarketsMinimumExpiryTime { get; set; }
@@ -49,7 +49,7 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public object SprintMarketsMaximumExpiryTime { get; set; }
 
         [JsonProperty("marginDepositBands")]
-        public ReadOnlyCollection<MarginDepositBand> MarginDepositBands { get; }
+        public List<MarginDepositBand> MarginDepositBands { get; set; }
 
         [JsonProperty("marginFactor")]
         public double MarginFactor { get; set; }
@@ -57,17 +57,8 @@ namespace IG.Csharp.Api.Client.Rest.Model
         [JsonProperty("marginFactorUnit")]
         public string MarginFactorUnit { get; set; }
 
-        [JsonProperty("slippageFactor")]
-        public SlippageFactor SlippageFactor { get; set; }
-
-        [JsonProperty("limitedRiskPremium")]
-        public LimitedRiskPremium LimitedRiskPremium { get; set; }
-
         [JsonProperty("openingHours")]
         public object OpeningHours { get; set; }
-
-        [JsonProperty("expiryDetails")]
-        public ExpiryDetail ExpiryDetails { get; set; }
 
         [JsonProperty("rolloverDetails")]
         public object RolloverDetails { get; set; }
@@ -76,10 +67,10 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public string NewsCode { get; set; }
 
         [JsonProperty("chartCode")]
-        public object ChartCode { get; set; }
+        public string ChartCode { get; set; }
 
         [JsonProperty("country")]
-        public string Country { get; set; }
+        public object Country { get; set; }
 
         [JsonProperty("valueOfOnePip")]
         public object ValueOfOnePip { get; set; }
@@ -91,6 +82,6 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public object ContractSize { get; set; }
 
         [JsonProperty("specialInfo")]
-        public ReadOnlyCollection<string> SpecialInfo { get; set; }
+        public List<string> SpecialInfo { get; set; }
     }
 }
