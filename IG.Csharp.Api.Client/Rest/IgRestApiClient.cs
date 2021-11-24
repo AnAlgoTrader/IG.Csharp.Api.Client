@@ -88,15 +88,23 @@ namespace IG.Csharp.Api.Client.Rest
             File.WriteAllText(_username +".authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
         private T GetApiResponse<T>(string query, string version)
         {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-            client.DefaultRequestHeaders.Add("VERSION", version);
-            client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
-            client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
+            try
+            {
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+                client.DefaultRequestHeaders.Add("VERSION", version);
+                client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
+                client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
 
-            var result = client.GetStringAsync(new Uri($"{_baseUri}/{query}")).Result;
-            return JsonConvert.DeserializeObject<T>(result);
+                var result = client.GetStringAsync(new Uri($"{_baseUri}/{query}")).Result;
+                return JsonConvert.DeserializeObject<T>(result);
+            }
+            catch (AggregateException)
+            {
+                return default(T);
+            }
         }
+
         private T PostApiResponse<T>(string endpoint, string content, string version, string method = null)
         {
             using var client = new HttpClient();
@@ -129,9 +137,9 @@ namespace IG.Csharp.Api.Client.Rest
             var uri = $"{TRANSACTIONS_URI}?from={from:yyyy-MM-dd}";
             return GetApiResponse<TransactionsResponse>(uri, "2");
         }
-        public List<Transaction> GetTransactions(DateTime from, TransactionType transactionType)
+        public List<Transaction> GetTransactions(DateTime start, DateTime end, TransactionType transactionType)
         {
-            var uri = $"{TRANSACTIONS_URI}?type={transactionType}&from={from:yyyy-MM-dd}";
+            var uri = $"{TRANSACTIONS_URI}?type={transactionType}&from={ParseDateToIgFormat(start)}&to={ParseDateToIgFormat(end)}";
             var transactions = new List<Transaction>();
             GetTransactions(transactions, uri, 1);
             return transactions;
@@ -140,13 +148,14 @@ namespace IG.Csharp.Api.Client.Rest
         {
             var response = GetApiResponse<TransactionsResponse>($"{uri}&pageNumber={pageNumber}", "2");
             transactions.AddRange(response.Transactions);
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+            Console.WriteLine($"Handling page number: {response.MetaData.PageData.PageNumber}");
             if (response.MetaData.PageData.PageNumber < response.MetaData.PageData.TotalPages)
                 GetTransactions(transactions, uri, response.MetaData.PageData.PageNumber + 1);
             return transactions;
         }
-        public ActivitiesResponse GetActivities(DateTime from, bool detailed) =>
-            GetApiResponse<ActivitiesResponse>($"{ACTIVITIES_URI}?from={from:yyyy-MM-dd}&detailed={detailed}", "3");
+        public ActivitiesResponse GetActivities(DateTime start, bool detailed) =>
+            GetApiResponse<ActivitiesResponse>($"{ACTIVITIES_URI}?from={start:yyyy-MM-dd}&detailed={detailed}", "3");
         public OpenPositionResponse OpenMarketPosition(string epic, string side, double size)
         {
             var request = new OpenPositionRequest
@@ -228,8 +237,8 @@ namespace IG.Csharp.Api.Client.Rest
             GetApiResponse<SearchMarketResponse>($"{MARKETS_URI}?searchTerm={WebUtility.UrlEncode(searchTem)}", "1");
         public void SavePriceDataToFile(string epic, Resolution resolution, DateTime from, DateTime to, string filePathToSave)
         {
-            var startDate = from.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
-            var endDate = to.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
+            var startDate = ParseDateToIgFormat(from);
+            var endDate = ParseDateToIgFormat(to);
             var uri = $"{PRICES_URI}/{epic}?resolution={resolution}&from={startDate}&to={endDate}";
 
             var prices = new List<Price>();
@@ -251,6 +260,9 @@ namespace IG.Csharp.Api.Client.Rest
                 prices.Select(x =>
                 $"{x.SnapshotTime},{x.OpenPrice.Ask},{x.OpenPrice.Bid}")
                 .ToList());
+        }
+        private static string ParseDateToIgFormat(DateTime date){
+            return date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
         }
 
         public void SetCurrentMarketData(Candle data)

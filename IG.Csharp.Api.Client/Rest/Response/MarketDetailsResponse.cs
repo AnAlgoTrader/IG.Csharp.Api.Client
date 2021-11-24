@@ -10,5 +10,8 @@ namespace IG.Csharp.Api.Client.Rest.Response
 
         [JsonProperty("dealingRules")]
         public DealingRule DealingRules { get; set; }
+        
+        [JsonProperty("snapshot")]
+        public Snapshot Snapshot { get; set; }
     }
 }

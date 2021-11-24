@@ -8,7 +8,7 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public string MarketStatus { get; set; }
 
         [JsonProperty("netChange")]
-        public int NetChange { get; set; }
+        public double NetChange { get; set; }
 
         [JsonProperty("percentageChange")]
         public double PercentageChange { get; set; }
@@ -41,6 +41,6 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public int ScalingFactor { get; set; }
 
         [JsonProperty("controlledRiskExtraSpread")]
-        public int ControlledRiskExtraSpread { get; set; }
+        public double ControlledRiskExtraSpread { get; set; }
     }
 }
