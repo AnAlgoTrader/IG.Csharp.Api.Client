@@ -149,7 +149,7 @@ namespace IG.Csharp.Api.Client.Rest
             var response = GetApiResponse<TransactionsResponse>($"{uri}&pageNumber={pageNumber}", "2");
             transactions.AddRange(response.Transactions);
             Thread.Sleep(TimeSpan.FromSeconds(5));
-            Console.WriteLine($"Handling page number: {response.MetaData.PageData.PageNumber}");
+            Console.WriteLine($"Handling page number: {response.MetaData.PageData.PageNumber}/{response.MetaData.PageData.TotalPages}");
             if (response.MetaData.PageData.PageNumber < response.MetaData.PageData.TotalPages)
                 GetTransactions(transactions, uri, response.MetaData.PageData.PageNumber + 1);
             return transactions;
