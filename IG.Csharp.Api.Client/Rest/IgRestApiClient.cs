@@ -235,7 +235,7 @@ namespace IG.Csharp.Api.Client.Rest
             GetApiResponse<MarketDetailsResponse>($"{MARKETS_URI}/{epic}", "3");
         public SearchMarketResponse SearchMarkets(string searchTem) =>
             GetApiResponse<SearchMarketResponse>($"{MARKETS_URI}?searchTerm={WebUtility.UrlEncode(searchTem)}", "1");
-        public void SavePriceDataToFile(string epic, Resolution resolution, DateTime from, DateTime to, string filePathToSave)
+        public void SaveHistoricalDataToFile(string epic, Resolution resolution, DateTime from, DateTime to, string filePathToSave)
         {
             var startDate = ParseDateToIgFormat(from);
             var endDate = ParseDateToIgFormat(to);
@@ -258,11 +258,11 @@ namespace IG.Csharp.Api.Client.Rest
 
             File.WriteAllLines(filePathToSave,
                 prices.Select(x =>
-                $"{x.SnapshotTime},{x.OpenPrice.Ask},{x.OpenPrice.Bid}")
+                $"{x.SnapshotTime},{x.OpenPrice.Ask}, {x.HighPrice.Ask}, {x.LowPrice.Ask}, {x.ClosePrice.Ask}, {x.LastTradedVolume}")
                 .ToList());
         }
         private static string ParseDateToIgFormat(DateTime date){
-            return date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%3A00%3A00";
+            return date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%253A00%253A00";
         }
 
         public void SetCurrentMarketData(Candle data)

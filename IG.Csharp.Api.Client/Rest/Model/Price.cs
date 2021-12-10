@@ -25,6 +25,6 @@ namespace IG.Csharp.Api.Client.Rest.Model
         public PriceData LowPrice { get; set; }
 
         [JsonProperty("lastTradedVolume")]
-        public int LastTradedVolume { get; set; }
+        public double LastTradedVolume { get; set; }
     }
 }
