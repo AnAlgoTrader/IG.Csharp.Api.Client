@@ -257,3 +257,4 @@ paket-files/
 
 # CodeRush
 .cr/
+*.json
