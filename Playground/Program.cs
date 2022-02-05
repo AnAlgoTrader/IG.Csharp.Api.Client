@@ -6,8 +6,10 @@ namespace Playground
     {
         static void Main(string[] args)
         {
-            var authenticationExample = new AuthenticationExample();
-            authenticationExample.Run();
+            var streamingExample = new StreamingExample();
+            streamingExample.Run();
+
+            Console.ReadLine();
         }
     }
 }
