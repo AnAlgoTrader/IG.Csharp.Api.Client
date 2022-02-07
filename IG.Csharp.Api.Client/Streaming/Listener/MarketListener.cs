@@ -46,7 +46,7 @@ namespace IG.Csharp.Api.Client.Streaming.Listener
 
             var json = JsonConvert.SerializeObject(itemUpdate.Fields, Formatting.Indented);
             var marketData = JsonConvert.DeserializeObject<MarketData>(json);
-            marketData.Epic = itemUpdate.ItemName.Replace("MARKET:", string.Empty, StringComparison.InvariantCulture);
+            marketData.Epic = itemUpdate.ItemName.Replace("MARKET:", string.Empty);
             OnMarketUpdateHandler(new MarketDataEventArgs(marketData));
         }
 

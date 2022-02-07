@@ -55,25 +55,29 @@ namespace IG.Csharp.Api.Client.Rest
                     password = _password
                 };
 
-                using var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-                client.DefaultRequestHeaders.Add("VERSION", "2");
-
-                using var content = new StringContent(JsonConvert.SerializeObject(authRequest));
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                var response = client.PostAsync(new Uri($"{_baseUri}/{SESSION_URI}"), content).Result;
-                if (response.StatusCode == HttpStatusCode.OK)
+                using (var client = new HttpClient())
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    _authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(result);
+                    client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+                    client.DefaultRequestHeaders.Add("VERSION", "2");
 
-                    _authenticationResponse.Cst = response.Headers.FirstOrDefault(x => x.Key == "CST").Value.First();
-                    _authenticationResponse.XSecurityToken = response.Headers.FirstOrDefault(x => x.Key == "X-SECURITY-TOKEN").Value.First();
-                    _authenticationResponse.ApiKey = _apiKey;
-                    _authenticationResponse.Date = DateTime.Now;
-                    SaveAuthentication(_authenticationResponse);
+                    using (var content = new StringContent(JsonConvert.SerializeObject(authRequest)))
+                    {
+                        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        var response = client.PostAsync(new Uri($"{_baseUri}/{SESSION_URI}"), content).Result;
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            var result = response.Content.ReadAsStringAsync().Result;
+                            _authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(result);
+
+                            _authenticationResponse.Cst = response.Headers.FirstOrDefault(x => x.Key == "CST").Value.First();
+                            _authenticationResponse.XSecurityToken = response.Headers.FirstOrDefault(x => x.Key == "X-SECURITY-TOKEN").Value.First();
+                            _authenticationResponse.ApiKey = _apiKey;
+                            _authenticationResponse.Date = DateTime.Now;
+                            SaveAuthentication(_authenticationResponse);
+                        }
+                        else throw new AuthenticationException("Not Authenticated");
+                    }
                 }
-                else throw new AuthenticationException("Not Authenticated");
             }
             return _authenticationResponse;
         }
@@ -81,23 +85,25 @@ namespace IG.Csharp.Api.Client.Rest
                 (DateTime.Now - _authenticationResponse.Date).TotalHours >= 5;
         private AuthenticationResponse GetAuthenticationResponseFromDisk()
         {
-            try { return JsonConvert.DeserializeObject<AuthenticationResponse>(File.ReadAllText(_username +".authenticationResponse.json")); }
+            try { return JsonConvert.DeserializeObject<AuthenticationResponse>(File.ReadAllText(_username + ".authenticationResponse.json")); }
             catch (FileNotFoundException) { return null; }
         }
         private void SaveAuthentication(AuthenticationResponse authenticationResponse) =>
-            File.WriteAllText(_username +".authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
+            File.WriteAllText(_username + ".authenticationResponse.json", JsonConvert.SerializeObject(authenticationResponse));
         private T GetApiResponse<T>(string query, string version)
         {
             try
             {
-                using var client = new HttpClient();
-                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-                client.DefaultRequestHeaders.Add("VERSION", version);
-                client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
-                client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+                    client.DefaultRequestHeaders.Add("VERSION", version);
+                    client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
+                    client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
 
-                var result = client.GetStringAsync(new Uri($"{_baseUri}/{query}")).Result;
-                return JsonConvert.DeserializeObject<T>(result);
+                    var result = client.GetStringAsync(new Uri($"{_baseUri}/{query}")).Result;
+                    return JsonConvert.DeserializeObject<T>(result);
+                }
             }
             catch (AggregateException)
             {
@@ -107,20 +113,26 @@ namespace IG.Csharp.Api.Client.Rest
 
         private T PostApiResponse<T>(string endpoint, string content, string version, string method = null)
         {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
-            client.DefaultRequestHeaders.Add("VERSION", version);
-            client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
-            client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
-            if (method != null)
-                client.DefaultRequestHeaders.Add("_method", method);
+            using (var client = new HttpClient())
+            {
 
-            using var stringContent = new StringContent(content);
-            stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = client.PostAsync(new Uri($"{_baseUri}/{endpoint}"), stringContent).Result;
-            var result = response.Content.ReadAsStringAsync().Result;
-            return JsonConvert.DeserializeObject<T>(result);
+                client.DefaultRequestHeaders.Add("X-IG-API-KEY", _apiKey);
+                client.DefaultRequestHeaders.Add("VERSION", version);
+                client.DefaultRequestHeaders.Add("CST", _authenticationResponse.Cst);
+                client.DefaultRequestHeaders.Add("X-SECURITY-TOKEN", _authenticationResponse.XSecurityToken);
+                if (method != null)
+                    client.DefaultRequestHeaders.Add("_method", method);
+
+                using (var stringContent = new StringContent(content))
+                {
+                    stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    var response = client.PostAsync(new Uri($"{_baseUri}/{endpoint}"), stringContent).Result;
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    return JsonConvert.DeserializeObject<T>(result);
+                }
+            }
         }
         public PositionsResponse GetPositions() =>
             GetApiResponse<PositionsResponse>(POSITIONS_URI, "2");
@@ -261,7 +273,8 @@ namespace IG.Csharp.Api.Client.Rest
                 $"{x.SnapshotTime},{x.OpenPrice.Ask}, {x.HighPrice.Ask}, {x.LowPrice.Ask}, {x.ClosePrice.Ask}, {x.LastTradedVolume}")
                 .ToList());
         }
-        private static string ParseDateToIgFormat(DateTime date){
+        private static string ParseDateToIgFormat(DateTime date)
+        {
             return date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) + "T00%253A00%253A00";
         }
 
