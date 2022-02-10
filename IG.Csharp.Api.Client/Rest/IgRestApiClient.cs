@@ -168,20 +168,8 @@ namespace IG.Csharp.Api.Client.Rest
         }
         public ActivitiesResponse GetActivities(DateTime start, bool detailed) =>
             GetApiResponse<ActivitiesResponse>($"{ACTIVITIES_URI}?from={start:yyyy-MM-dd}&detailed={detailed}", "3");
-        public OpenPositionResponse OpenMarketPosition(string epic, string side, double size)
+        public OpenPositionResponse OpenPosition(OpenPositionRequest request)
         {
-            var request = new OpenPositionRequest
-            {
-                Epic = epic,
-                Expiry = "DFB",
-                Direction = side,
-                Size = size,
-                OrderType = "MARKET",
-                GuaranteedStop = false,
-                TrailingStop = false,
-                ForceOpen = true,
-                CurrencyCode = "GBP"
-            };
             var content = JsonConvert.SerializeObject(request);
             return PostApiResponse<OpenPositionResponse>(POSITIONS_OTC_URI, content, "2");
         }
@@ -283,5 +271,44 @@ namespace IG.Csharp.Api.Client.Rest
             //backtesting method, do not use from this class
             throw new NotImplementedException();
         }
+
+        #region Position Examples
+        public OpenPositionResponse OpenMarketPosition(string epic, TradeSide side, double size)
+        {
+            var request = new OpenPositionRequest
+            {
+                Epic = epic,
+                Expiry = "DFB",
+                Direction = side.ToString(),
+                Size = size,
+                OrderType = "MARKET",
+                GuaranteedStop = false,
+                TrailingStop = false,
+                ForceOpen = true,
+                CurrencyCode = "GBP"
+            };
+            var content = JsonConvert.SerializeObject(request);
+            return PostApiResponse<OpenPositionResponse>(POSITIONS_OTC_URI, content, "2");
+        }
+        public OpenPositionResponse OpenMarketTrailingPosition(string epic, TradeSide side, double size, double trailingStopIncrement, double stopDistance)
+        {
+            var request = new OpenPositionRequest
+            {
+                Epic = epic,
+                Expiry = "DFB",
+                Direction = side.ToString(),
+                Size = size,
+                OrderType = "MARKET",
+                GuaranteedStop = false,
+                TrailingStop = true,
+                ForceOpen = true,
+                CurrencyCode = "GBP",
+                StopDistance = stopDistance,
+                TrailingStopIncrement = trailingStopIncrement
+            };
+            var content = JsonConvert.SerializeObject(request);
+            return PostApiResponse<OpenPositionResponse>(POSITIONS_OTC_URI, content, "2");
+        }
+        #endregion
     }
 }

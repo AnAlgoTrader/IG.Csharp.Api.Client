@@ -16,7 +16,9 @@ namespace IG.Csharp.Api.Client.Rest
         WatchlistInstrumentsResponse GetInstrumentsByWatchlistId(string watchListId);
         TransactionsResponse GetTransactions(DateTime start);
         List<Transaction> GetTransactions(DateTime startTime, DateTime endTime, TransactionType transactionType);
-        OpenPositionResponse OpenMarketPosition(string epic, string side, double size);
+        OpenPositionResponse OpenPosition(OpenPositionRequest request);
+        OpenPositionResponse OpenMarketPosition(string epic, TradeSide side, double size);
+        OpenPositionResponse OpenMarketTrailingPosition(string epic, TradeSide side, double size, double trailingStopIncrement, double stopDistance);
         CreateWorkingOrderResponse CreateWorkingOrder(string epic, string side, double size, double level,
             bool guaranteedStop = false, double? stopDistance = null);
         ClosePositionResponse ClosePosition(ClosePositionRequest request, string version);
