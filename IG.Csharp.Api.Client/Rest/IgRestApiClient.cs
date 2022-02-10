@@ -272,7 +272,7 @@ namespace IG.Csharp.Api.Client.Rest
             throw new NotImplementedException();
         }
 
-        #region Position Examples
+        #region Open Position Examples
         public OpenPositionResponse OpenMarketPosition(string epic, TradeSide side, double size)
         {
             var request = new OpenPositionRequest
