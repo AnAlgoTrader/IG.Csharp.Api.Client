@@ -21,8 +21,8 @@ namespace Playground
         }
         public void Run()
         {
-            var resolution = Enum.Parse(typeof(Resolution), "HOUR");
-            var prices = _igClient.GetHistoricalPrices("CS.D.EURGBP.TODAY.IP", Resolution.HOUR,
+            var resolution = (Resolution)Enum.Parse(typeof(Resolution), "HOUR");
+            var prices = _igClient.GetHistoricalPrices("CS.D.EURGBP.TODAY.IP", resolution,
                 new System.DateTime(2022, 02, 05), new System.DateTime(2022, 02, 10));
         }
     }
