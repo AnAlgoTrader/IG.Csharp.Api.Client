@@ -30,6 +30,7 @@ namespace IG.Csharp.Api.Client.Rest
         MarketDetailsResponse GetMarketDetails(string epic);
         SearchMarketResponse SearchMarkets(string searchTem);
         ActivitiesResponse GetActivities(DateTime from, bool detailed);
+        List<Price> GetHistoricalPrices(string epic, Resolution resolution, DateTime from, DateTime toEnd);
 
         #region BackTesting
         void SetCurrentMarketData(Candle data);

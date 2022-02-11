@@ -5,6 +5,7 @@ using IG.Csharp.Api.Client.Rest.Response;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -235,13 +236,14 @@ namespace IG.Csharp.Api.Client.Rest
             GetApiResponse<MarketDetailsResponse>($"{MARKETS_URI}/{epic}", "3");
         public SearchMarketResponse SearchMarkets(string searchTem) =>
             GetApiResponse<SearchMarketResponse>($"{MARKETS_URI}?searchTerm={WebUtility.UrlEncode(searchTem)}", "1");
-        public void SaveHistoricalDataToFile(string epic, Resolution resolution, DateTime from, DateTime to, string filePathToSave)
+
+        public List<Price> GetHistoricalPrices(string epic, Resolution resolution, DateTime from, DateTime toEnd)
         {
             var startDate = ParseDateToIgFormat(from);
-            var endDate = ParseDateToIgFormat(to);
+            var endDate = ParseDateToIgFormat(toEnd);
             var uri = $"{PRICES_URI}/{epic}?resolution={resolution}&from={startDate}&to={endDate}";
-
             var prices = new List<Price>();
+
             var response = GetApiResponse<HistoricalPricesResponse>(uri, "3");
             prices.AddRange(response.Prices);
 
@@ -255,6 +257,11 @@ namespace IG.Csharp.Api.Client.Rest
                     prices.AddRange(response.Prices);
                 }
             }
+            return prices;
+        }
+        public void SaveHistoricalDataToFile(string epic, Resolution resolution, DateTime start, DateTime end, string filePathToSave)
+        {
+            var prices = GetHistoricalPrices(epic, resolution, start, end);
 
             File.WriteAllLines(filePathToSave,
                 prices.Select(x =>
