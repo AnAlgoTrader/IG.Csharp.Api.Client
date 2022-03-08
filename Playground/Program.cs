@@ -1,11 +1,15 @@
-﻿namespace Playground
+﻿using System;
+
+namespace Playground
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var downloadDataExample = new DownloadDataExample();
-            downloadDataExample.Run();
+            var example = new StreamingExample();
+            example.Run();
+
+            Console.ReadLine();
         }
     }
 }
